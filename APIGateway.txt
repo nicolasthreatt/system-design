@@ -1,0 +1,142 @@
+API Gatway Notes
+
+What is an API Gateway?
+    - Serves as a single point for all client requests
+        + Manages and routes requests to respective backend services
+        + Provides a clean seperation between the internal services and the external API
+    - Primary function is request routing
+        + Determine which backend service should handle each request
+    - Core component in modern architectures with the rise of microservices
+        + As monolithic applications were broken down into smaller specialized services,
+          there became a need for a centralized point of control
+    - Without an API Gateway, clients would need to know about/communicate directly with each microservice
+        + Leads to tigher coupling and more complex client code
+    - Also used to handle various middleware tasks such as authentication, rate limiting, caching, SSL termination
+
+Core Responsibilities
+    1. Request Validation
+        + Checks that:
+            * Request URL is valid
+            * Required headers are present
+            * Request body matches expected format
+    2. Middleware
+        + Handles various tasks such as:
+            * Authentication
+            * Rate limiting
+            * IP Whitelisting/blacklisting
+    3. Routing
+        + Gateway maintains a routing table that maps incoming requests to backend services
+        + Mapping is typically based on a combination of:
+            * URL paths
+            * HTTP methods
+            * Query parameters
+            * Request headers
+        + Example Code:
+            routes:
+                - path: /users/*
+                    service: user-service
+                    port: 8080
+                - path: /orders/*
+                    service: order-service
+                    port: 8081
+                - path: /payments/*
+                    service: payment-service
+                    port: 8082
+        + Gateway will quickly look up which backend service to send the request based on the
+          path, query parameters, and headers and send the request onward respectively
+    4. Backend Communication
+        + Gateway forwards requests to the appropriate backend service based on routing rules
+        + Handles protocol translation if needed (e.g., HTTP -> gRPC)
+        + Supports retries, timeouts, and basic load balancing to ensure reliability
+        + Ensure secure transmission of headers and body to backend services
+    5. Response Transformation
+        + Gate will transform response from backend service into format requested by client
+            * Transformation layer allows internal servies to use any protocol or format is most efficient
+        + Example Code:
+            // Client sends a HTTP GET request
+            GET /users/123/profile
+
+            // API Gateway transforms this into an internal gRPC call
+            userService.getProfile({ userId: "123" })
+
+            // Gateway transforms the gRPC response into JSON and returns it to the client over HTTP
+            {
+            "userId": "123",
+            "name": "John Doe",
+            "email": "john@example.com"
+            }
+    6. Caching
+        + Before sending request back to client, the gateway can optionally cache response
+            * Useful for frequently accessed date that doesn't change often or not user specific
+        + API Gateway can implement various caching strategies:
+            1. Full Response Caching - Cache entire responses for frequently accessed endpoints
+            2. Partial Caching - Cache specific parts of responses that change infrequently
+            3. Cache Invalidation: Use TTL or event-based invalidation
+        + Can either cache the response in memory or in a distributed cache like Redis
+
+Scaling an API Gateway
+    - Globally
+        + For applications with users spread across the globie, an API gateway can be deployed closer to users
+            1. Regional Deployments
+                * Deploy gateway instances in multiple geographic regions
+            2. DNS-based Routing
+                * Use GeoDNS to route users to the nearest gateway
+            3. Configuration Synchronization
+                * Ensure routing rules and policies are consistent across regions
+    - Horizontally
+        + Add more gateway instances behind a load balancer to distribute incoming requests
+
+Popular API Gateways
+    - Managed Servies
+        + Cloud providers offer fully managed API Gateways solutions that integrate well with systems
+            1. AWS API Gateway
+                * Seamless integreation with AWS services
+                * Supports REST and WebSocket APIs
+                * Built-in features like:
+                    - Request throttling
+                    - API keys and usages plans
+                    - AWS Lambda integration
+                    - CloudWatch monitoring
+            2. Azure API Management
+                * Strong OAuth and OpenID Connect support
+                * Policy-based configuration
+                * Developer portal for API documentation
+            3. Google Coud Endpoints
+                * Deep integration with GCP services
+                * Strong gRPC supprt
+                * Automatic OpenAPI documentation
+        + Easy to but expensive to implement
+    - Open Source Solutions
+        + For teams wanting more control or tunning on-premises
+            1. Gravitee
+                * Built on Java
+                * API design-first approach
+                * Event-native APIs
+                * Strong UI/portal
+                * Analytics
+            2. Kong
+                * Built on NGINX
+                * Large plug-in ecosystem
+                * Supoorts both tradition and service mesh deployments
+                * Authentication
+            3. Tyk
+                * Built on Go/Javascript
+                * Native support for GraphQL
+                * Built-in API analytics
+                * Multi-date center capabilities
+                * Developer portal
+
+When to NOT Use API Gateway
+    - For simple monolithic applications or system with a single client type or function
+        + When there is no need for request routing, authentication, or transformation
+            * Personal blog built with Django or Rails serving HTML directly
+        + When direct client-to-service communicattion is sufficient and reduces latency
+            * Simple internal payroll app used only inside a common network
+        + When the added operational overhead of maintaining an API gateway outweighs the benefits
+            * MVP mobile app that only calls one backend service directly (like an early-stage startup chat app)
+
+Notes for Interviewing
+    - When introducing a API Gateway to your design simply mention,
+      "I'll add a API Gateway to handle routing and basic middleware"
+      and move on.
+       
