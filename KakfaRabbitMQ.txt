@@ -1,0 +1,82 @@
+Kafka vs RabbitMQ Notes
+
+RabbitMQ
+    - General-purpose message broker that supports multiple protocols
+        + AMQP 0.9.1
+        + AMQP 1.0
+        + MQTT
+        + STOMP
+        + etc.  
+    - Commonly used for:  
+        + Background jobs or long-running tasks (file scanning, image scaling, PDF conversion)
+        + Communication between microservices
+            * Passing events/messages reliably
+    - Traditionally, queues delete messages after being consumed and acknowledged
+    - Since v3.9 --> "Stream Queues" introduced:
+        + Persistent, replicated, append-only log
+        + Messages can be replayed multiple times (Kafka-like behavior)
+    - Strengths:
+        + Flexible Routing
+            * Supports complex routing via exchanges and bindings
+            * Can fan-out, topic-based, or direct routing
+        + Protocol Support
+            * Works across many messaging protocols (AMQP, MQTT, STOMP)
+        + Ease of Use
+            * Web-based management UI built-in
+            * Easy to install, configure, and monitor
+        + Efficiency
+            * Requires fewer resources than Kafka in most use cases
+            * Great for smaller-scale or moderate workloads
+
+Kafka
+    - Distributed streaming platform built for high-throughput ingestion and replay of streams
+    - Optimized for:
+        + Moving large volumes of data
+        + Real-time processing and analytics
+        + Long-term storage of events for auditing/tracking/logging
+    - Data is organized into topics that can be partitioned
+        + Each record has an offset (position in log)
+        + Consumers track offsets (auto or manual commit)
+        + Enables replay, re-processing, and parallel consumption
+    - Strengths
+        + High Throughput & Retention
+            * Stores messages on disk for configurable time/size limits
+            * Can handle millions of events per second
+        + Replay & Batch Processing
+            * Consumers can re-read messages from any offset
+            * Ideal for bug fixes or reprocessing pipelines
+        + Scalability
+            * Designed for horizontal scaling (add more brokers)
+            * Easily handles very large data streams
+        + Ecosystem
+            * Integrates with Spark, Flink, Hadoop, and real-time analytics frameworks
+
+Key Differences
+    - Storage & Replay:
+        + RabbitMQ (classic queues): Message deleted once acked
+        + RabbitMQ (stream queues): Persistent, replayable (like Kafka)
+        + Kafka: Always stores messages until retention period/size exceeded
+    - Routing
+        + RabbitMQ: Complex routing with exchanges
+        + Kafka: Simple pub/sub, consumers use offsets + partitions
+    - Scalability
+        + RabbitMQ: Better for vertical scaling (add resources to a single server)
+        + Kafka: Built for horizontal scaling (add more brokers/nodes)
+    - Latency & Use Cases
+        + RabbitMQ: Lower latency for small tasks, great for background jobs and microservice communication
+        + Kafka: Higher throughput, built for analytics, logging, and streaming pipelines
+    - Monitoring & Ops
+        + RabbitMQ: Built-in, user-friendly web UI
+        + Kafka: Relies on external tools (open source & commercial) for monitoring/admin
+
+When to Use
+    - RabbitMQ:
+        + Running background jobs or long-running tasks
+        + Microservice-to-microservice communication (order handling, notifications, payment processing)
+        + Need quick setup with low operational overhead
+        + Moderate workloads where replay isn’t critical
+    - Kafka:
+        + Collecting, storing, and analyzing large-scale event streams
+        + Real-time analytics, ingestion pipelines, auditing, or security logs
+        + Systems that require replay/reprocessing of messages
+        + Use cases needing high throughput and horizontal scalability
