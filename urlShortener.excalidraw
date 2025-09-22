@@ -251,8 +251,8 @@
         "type": 3
       },
       "seed": 1023729727,
-      "version": 867,
-      "versionNonce": 1863108581,
+      "version": 869,
+      "versionNonce": 644688919,
       "isDeleted": false,
       "boundElements": [
         {
@@ -268,7 +268,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1756655949198,
+      "updated": 1758470046789,
       "link": null,
       "locked": false
     },
@@ -977,8 +977,8 @@
       "index": "b2S",
       "roundness": null,
       "seed": 54257727,
-      "version": 1926,
-      "versionNonce": 441290437,
+      "version": 1928,
+      "versionNonce": 1191739833,
       "isDeleted": false,
       "boundElements": [
         {
@@ -986,7 +986,7 @@
           "type": "arrow"
         }
       ],
-      "updated": 1756655949198,
+      "updated": 1758470047917,
       "link": null,
       "locked": false,
       "text": "GET /{short_url} ->\nRedirect to orignal url\n",
@@ -1117,6 +1117,43 @@
       "verticalAlign": "top",
       "containerId": null,
       "originalText": "Non-Functional Requirements\n- The sysstem should ensure uniqueness for the short codes\n    + No two long URLs can map to the same short URL\n- The redirection should occur within minimal delay (<100 ms)\n- The system should be reliable AND available 99.99% of the time\n    + Availability >>> Consistency\n- System should scale to support 1B shortened URLs",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "k8ra0JjBxuPmuE1Ee6XP5",
+      "type": "text",
+      "x": 871.569121025334,
+      "y": 120.55214962445302,
+      "width": 144.0998992919922,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b2k",
+      "roundness": null,
+      "seed": 865855761,
+      "version": 204,
+      "versionNonce": 192040657,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1758504276839,
+      "link": null,
+      "locked": false,
+      "text": "URL Shortener",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "URL Shortener",
       "autoResize": true,
       "lineHeight": 1.25
     }
