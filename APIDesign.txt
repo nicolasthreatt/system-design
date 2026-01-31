@@ -1,0 +1,199 @@
+API Design
+
+
+REST
+    - Built around resources or core entities
+    - Best practice to use plural nouns for resources
+    - Use plural nouns for resource names
+        GET /events                 # Get all events
+        GET /events/{id}            # Get specific event
+        GET /venues/{id}            # Get specific venue
+        GET /events/{id}/tickets    # Get available tickets for an event
+        POST /events/{id}/bookings  # Create new booking for an event
+        GET /bookings/{id}          # Get specific booking
+
+
+HTTP Methods
+    - GET    (retrieve data)
+    - POST   (create data)
+    - PUT    (idempotent update/replace)
+    - PATCH  (partial update)
+    - DELETE (remove data)
+
+
+Inputs
+    - Path Parameters
+        * Specify which resource you're working with
+        * Use when required to identify the resource
+        * Example: GET /events/{id}
+    - Query Parameters
+        * Optional filters
+        * Example: GET /events?city=CITY&date=DATE&venue=VENUE
+    - Request Body
+        POST /events
+        {
+            "title": "Concert",
+            "description": "Live show",
+            "location": "NYC",
+            "date": "2026-02-01"
+        }
+
+
+Responses
+    - Contains two parts:
+        1. Status Code
+            * 200 - Success
+            * 201 - Success, Created
+            * 204 - Success, No Content
+            * 400 - Bad Request
+            * 401 - Not Authenticated
+            * 403 - Not Authorized
+            * 404 - Not Found
+            * 409 - Conflict
+            * 422 - Unprocessable Entity
+            * 500 - Server Error
+            * 503 - Service Unavailable
+        2. Response Body
+            Success Example:
+            {
+                "data": {
+                    "id": "123",
+                    "status": "confirmed"
+                }
+            }
+            Error Example:
+            {
+                "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "date is required",
+                    "details": {
+                        "field": "date"
+                    }
+                }
+            }
+
+
+GraphQL
+    - Created at Facebook in 2012
+    - Open sourced in 2015
+    - Single endpoint with strongly typed schema
+    - Clients request exactly the fields they need
+    - Supports nested queries
+    - Reduces over/under-fetching
+        POST /graphql
+        query {
+            event(id: "123") {
+                name
+                date
+                venue {
+                    name
+                    address
+                }
+                tickets {
+                    section
+                    price
+                    available
+                }
+            }
+        }
+
+
+RPC
+    - Intra-microservice communication
+    - Very efficient
+    - Often defined via IDL (Protocol Buffers) or JSON-RPC
+    - Requires both sides to agree on protocol and schema
+        getEvent(eventId: "123")
+        createBooking(eventId: "123", userId: "456", tickets: [...])
+        getAvailableTickets(eventId: "123", section: "VIP")
+
+
+Pagination
+    - Useful for any endpoint that will retrieve many resources
+    - Two Types
+        1. Page
+            GET /events?page=PAGE_NUM&limit=LIMIT_NUM
+            * Returns items with indexes:
+              ((PAGE_NUM - 1) * LIMIT_NUM) to (PAGE_NUM * LIMIT_NUM)
+        2. Cursor
+            GET /events?cursor=CURSOR_IDX&limit=LIMIT_NUM
+            * Returns indexes:
+              CURSOR_IDX to (CURSOR_IDX + LIMIT_NUM)
+    - Common Fields
+        * next_cursor
+        * has_more
+        * total
+
+
+Security
+    - JWT (JSON Web Token)
+        * Encodes user data and permissions
+        * Example:
+          Authorization: Bearer <token>
+        * Includes expiry and refresh rules
+   - Session Token
+        * A random token used to find user info server side
+        * Store securely (HTTP-only cookies)
+
+
+Versioning
+    - Never break existing clients
+    - Use explicit versioning
+        /api/v1/events
+        /api/v2/events
+    - Deprecate old versions gradually
+    - Communicate breaking changes early
+
+
+Rate Limiting
+    - Protect APIs from abuse and overload
+    - Apply per-user and per-IP limits
+    - Return 429 when exceeded
+        X-RateLimit-Limit
+        X-RateLimit-Remaining
+        Retry-After
+
+
+Idempotency
+    - Prevent duplicate operations
+    - Especially important for POST requests
+    - Use idempotency keys
+        Idempotency-Key: abc-123
+
+
+Caching
+    - Improve performance and reduce load
+    - Cache safe GET requests
+    - Use HTTP cache headers
+        Cache-Control: max-age=60
+        ETag
+        If-None-Match
+
+
+Validation
+    - Validate all incoming data
+    - Enforce schemas
+    - Reject invalid input early
+    - Normalize data formats (dates, IDs, enums)
+
+
+Observability
+    - Log all requests and errors
+    - Add correlation/request IDs
+    - Export metrics (latency, errors, throughput)
+    - Enable distributed tracing
+        X-Request-Id
+
+
+Reliability
+    - Implement timeouts and retries
+    - Use circuit breakers
+    - Handle partial failures gracefully
+    - Avoid cascading failures
+
+
+Documentation
+    - Keep API docs up to date
+    - Use OpenAPI / Swagger
+    - Provide examples and error codes
+    - Document edge cases and limits
