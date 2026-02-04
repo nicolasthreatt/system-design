@@ -1,0 +1,160 @@
+Databases
+
+
+Types
+    1. Relational Databases (SQL)
+        - Structured tables (rows & columns)
+        - Strong schema enforcement
+        - ACID transactions
+            + Atomicity (all or nothing)
+            + Consistency (data validity)
+            + Isolation (concurrent ops)
+            + Durability (persistent storage)
+        - Supports joins and constraints
+        - Query language: SQL
+        - Example:
+            SELECT users.name, orders.amount
+            FROM users
+            JOIN orders ON users.id = orders.user_id;
+        - Best For
+            * Financial systems
+            * Inventory systems
+            * Transaction-heavy workloads
+        - Tradeoffs
+            * Harder horizontal scaling
+            * Schema migrations required
+        - Systems:
+            * MySQL
+            * PostgreSQL
+            * Oracle DB
+            * SQL Server
+    2. Document Databases (NoSQL)
+        - JSON/BSON documents
+        - Flexible schema
+        - Nested data support
+        - Easy horizontal scaling
+        - Query language: varies (e.g., MongoDB query)
+        - Example:
+            db.users.find({ "age": { "$gt": 25 } })
+        - Best For
+            * User profiles
+            * CMS systems
+            * Event data
+        - Tradeoffs
+            * Weak joins
+            * Data duplication
+        - Systems:
+            * MongoDB
+            * Firebase Firestore
+    3. Key-Value Stores
+        - Key -> Value mapping
+        - Extremely fast lookups
+        - No query language
+        - Example:
+            GET user:12345
+        - Best For
+            * Caching
+            * Sessions
+            * Feature flags
+        - Tradeoffs
+            * No filtering
+            * No relationships
+        - Systems:
+            * Redis
+            * DynamoDB
+    4. Graph Databases
+        - Nodes and edges
+        - Relationship-first model
+        - Efficient traversal
+        - Query language: Cypher, Gremlin
+        - Example:
+            MATCH (a:Person)-[:FRIEND]->(b:Person)
+            WHERE a.name = 'Alice'
+            RETURN b.name;
+        - Best For
+            * Social networks
+            * Recommendation engines
+            * Fraud detection
+        - Tradeoffs
+            * Complex modeling
+            * Smaller ecosystem
+        - Systems:
+            * Neo4j
+            * Amazon Neptune
+
+
+Keys and Relationships
+    - Primary Key
+        * Unique row identifier
+        * Supports indexing and sharding
+        * Immutable
+    - Foreign Key
+        * Enforces referential integrity
+        * Prevents orphan records
+        * Links related tables
+
+
+Indexing Strategy
+    - Overview
+        * Speed up read queries
+        * Reduce full table scans
+    - Index frequently queried fields
+    - Avoid over-indexing
+    - Monitor slow queries
+    - Use composite indexes when needed
+    - Rebuild indexes periodically
+    - Types
+        * B-Tree
+        * Hash
+        * Full-Text
+        * Geospatial
+
+
+Change Data Capture (CDC)
+    - Overview
+        * Streams DB changes in real time
+        * Low latency data sync
+        * Captures INSERT, UPDATE, DELETE
+        * Enables event-driven pipelines
+        * Supports eventual consistency
+        * Integrates with message queues
+    - Common Tools
+        * Debezium
+        * Flink CDC
+        * AWS DMS
+        * GoldenGate
+    - Best Practices
+        * Handle schema evolution
+        * Deduplicate events
+        * Support replay
+        * Monitor lag
+    - Use Cases
+        * Data warehouses
+        * Microservice sync
+        * Audit logs
+        * Cache updates
+    - Examples:
+        * Capture changes from a MySQL DB and stream to Kafka for real-time analytics.
+        * Sync user profile updates across microservices using CDC events.
+        * Trigger events for downstream processing on data changes.
+        * Maintain an audit trail of all DB changes for compliance.
+
+
+Backup and Recovery
+    - Overview
+        * Ensure data durability
+        * Minimize downtime
+        * Protect against data loss
+    - Techniques
+        * Automated backups
+        * Point-in-time recovery
+        * Cross-region replication
+        * Disaster recovery drills
+    - Backup Strategies
+        * Full backups
+        * Incremental backups
+        * Differential backups
+    - Recovery Strategies
+        * Restore from backup
+        * Use transaction logs
+        * Test recovery procedures
