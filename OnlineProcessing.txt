@@ -1,0 +1,170 @@
+Online Transaction and Analytical Processing
+
+
+Types
+    - OLTP (Online TRANSACTION Processing)
+        * Focused on day-to-day operations
+        * Handles many small transactions
+        * Optimized for fast inserts and updates
+        * High concurrency
+        * Strong ACID compliance
+        * Examples: banking, e-commerce, booking systems
+    - OLAP (Online ANALYTICAL Processing)
+        * Focused on analytics and reporting
+        * Handles complex queries
+        * Optimized for read-heavy workloads
+        * Processes large volumes of data
+        * Supports aggregations and scans
+        * Examples: BI, dashboards, forecasting
+
+
+Workload Characteristics
+    - OLTP
+        * Short queries
+        * Many concurrent users
+        * Frequent writes
+        * Real-time operations
+    - OLAP
+        * Long-running queries
+        * Few concurrent users
+        * Mostly reads
+        * Historical analysis
+
+
+Data Structure
+    - OLTP
+        * Highly normalized tables
+        * Many small related tables
+        * Optimized for consistency
+    - OLAP
+        * Denormalized schemas
+        * Star and Snowflake schemas
+            + Star: Central fact table with dimension tables
+            + Snowflake: Normalized dimension tables
+        * Fact and dimension tables
+        * Optimized for query performance
+
+
+Performance Goals
+    - OLTP
+        * Low latency per transaction
+        * Millisecond response times
+        * High availability
+    - OLAP
+        * High throughput
+        * Parallel processing
+        * Query optimization
+
+
+Query Examples
+    - OLTP Example:
+        INSERT INTO orders (user_id, amount, created_at)
+        VALUES (123, 59.99, NOW());
+    - OLAP Example:
+        SELECT region, SUM(revenue)
+        FROM sales
+        GROUP BY region
+        ORDER BY SUM(revenue) DESC;
+
+
+Best Use Cases
+    - OLTP
+        * Payment processing
+        * Order management
+        * User authentication
+        * Inventory tracking
+        * Reservation systems
+    - OLAP
+        * Business intelligence
+        * Trend analysis
+        * Machine learning features
+        * Executive reporting
+        * Forecasting
+
+
+OLAP Database Types
+    1. Columnar Databases
+        - Store data by columns
+        - High compression
+        - Fast aggregations
+        - Best For
+            * Analytics at scale
+            * Time-series queries
+        - Systems:
+            * ClickHouse
+            * Amazon Redshift
+            * Apache Druid
+            * StarRocks
+    2. Data Warehouses
+        - Centralized analytical storage
+        - Integrated ETL and ELT pipelines
+        - SQL-based analytics
+        - Best For
+            * Enterprise reporting
+            * Historical analysis
+        - Systems:
+            * Snowflake
+            * BigQuery
+            * Azure Synapse
+    3. Real-Time Analytics Databases
+        - Low-latency ingestion
+        - Stream processing support
+        - Near real-time queries
+        - Best For
+            * Monitoring
+            * Live dashboards
+            * Fraud detection
+        - Systems:
+            * Tinybird
+            * Rockset
+            * Apache Pinot
+    4. Lakehouse Platforms
+        - Combine data lakes and warehouses
+        - Open file formats (Parquet, Delta)
+        - Supports ML and BI
+        - Best For
+            * Unified analytics
+            * Large-scale pipelines
+        - Systems:
+            * Databricks Lakehouse
+            * Delta Lake
+            * Apache Iceberg
+    5. Cloud-Native OLAP Engines
+        - Fully managed services
+        - Auto-scaling compute
+        - Separation of storage and compute
+        - Best For
+            * Serverless analytics
+            * Cost optimization
+        - Systems:
+            * Athena
+            * BigQuery
+            * Redshift Serverless
+
+
+Design Best Practices
+    - Separate OLTP and OLAP workloads
+    - Use CDC or ETL for data synchronization
+    - Partition large tables
+    - Optimize for common query patterns
+    - Monitor query performance
+    - Cache frequent queries
+    - Avoid running analytics on production OLTP systems
+
+
+Architecture Pattern
+    - OLTP Database (PostgreSQL / MySQL)
+          |
+          |  CDC / ETL
+          v
+    - Data Warehouse / OLAP Engine
+          |
+          v
+    - BI Tools / ML Pipelines
+
+
+Summary
+    - OLTP = operational systems (writes, transactions)
+    - OLAP = analytical systems (reads, insights)
+    - Mixing workloads reduces performance
+    - Modern architectures separate concerns
