@@ -1,0 +1,172 @@
+Microservices Architecture
+
+
+What are Microservices?
+    - Architectural style where an application is built as a collection of small, independent services
+    - Each service owns a specific business capability
+    - Services communicate over the network
+    - Each service can be developed, deployed, and scaled independently
+    - Opposite of monolithic architecture
+
+
+Core Principles
+    - Single Responsibility
+        + Each service does one thing well
+    - Loose Coupling
+        + Services minimize dependencies
+    - High Cohesion
+        + Related logic stays together
+    - Autonomous Teams
+        + Teams own services end-to-end
+    - Decentralized Governance
+        + Teams choose tools and libraries
+
+
+Service Design
+    - Bounded Context
+        + Define clear domain boundaries
+        + Avoid shared databases
+    - API-First Design
+        + Design interfaces before implementation
+    - Statelessness
+        + Store state in databases or caches
+    - Backward Compatibility
+        + Avoid breaking clients
+    - Versioned APIs
+
+
+Communication
+    - Synchronous
+        + HTTP/REST
+        + gRPC (google Remote Procedure Call)
+        + GraphQL
+    - Asynchronous
+        + Message queues
+        + Event streams
+    - Best Practices
+        + Prefer async for high-scale systems
+        + Avoid long call chains
+        + Implement timeouts
+
+
+Data Management
+    - Database per Service
+        + Each service owns its data
+    - No Shared Databases
+        + Prevent tight coupling
+    - Event-Driven Sync
+        + Use CDC or events
+    - Eventual Consistency
+        + Accept temporary inconsistency
+
+
+Service Discovery
+    - Dynamic discovery of services
+    - Enables scaling and failover
+    - Approaches
+        + Client-side discovery
+        + Server-side discovery
+    - Examples
+        + Kubernetes DNS
+        + Consul
+        + Eureka
+
+
+Resilience and Fault Tolerance
+    - Design for failure
+    - Techniques
+        + Retries with backoff
+        + Timeouts
+        + Circuit breakers
+        + Bulkheads
+        + Fallbacks
+    - Prevent cascading failures
+
+
+Deployment and CI/CD
+    - Independent deployments
+    - Automated pipelines
+    - Blue/Green deployments
+    - Canary releases
+    - Rollbacks
+    - Feature flags
+
+
+Observability
+    - Centralized Logging
+    - Distributed Tracing
+    - Metrics collection
+    - Correlation IDs
+    - Service dashboards
+
+
+Security
+    - Zero Trust model
+    - mTLS between services
+    - Centralized authentication
+    - Fine-grained authorization
+    - Secret management
+    - Secure service identities
+
+
+Configuration Management
+    - Externalized configs
+    - Environment-based configs
+    - Dynamic reloading
+    - Secret rotation
+
+
+Scaling
+    - Independent scaling per service
+    - Horizontal scaling preferred
+    - Auto-scaling policies
+    - Load-aware routing
+
+
+Testing Strategy
+    - Unit Tests
+    - Integration Tests
+    - Contract Tests
+    - End-to-End Tests
+    - Chaos Testing
+
+
+Anti-Patterns
+    - Distributed Monolith
+        + Services tightly coupled
+    - Chatty Services
+        + Too many network calls
+    - Shared Databases
+    - Over-Splitting
+        + Too many tiny services
+    - Manual Deployments
+
+
+When to Use Microservices
+    - Large teams
+    - Rapid feature development
+    - Independent scaling needs
+    - High availability requirements
+    - Multiple client platforms
+
+
+When NOT to Use Microservices
+    - Small teams
+    - Simple products
+    - Early-stage startups
+    - Low traffic systems
+    - Limited DevOps maturity
+
+
+Best Practices
+    - Start monolithic, split later
+        + Decomposes the system into independently deployable services,
+          each owning its data, communicating via APIs or events,
+          fronted by an API Gateway, with strong observability and resilience
+    - Automate everything
+    - Monitor everything
+    - Document APIs
+    - Enforce standards
+    - Design for failure
+    - Invest in tooling
+    - Mention tradeoffs and operational complexity
