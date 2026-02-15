@@ -1,0 +1,172 @@
+Containerization
+
+
+Types
+    1. Docker
+        - Builds and runs containers
+        - Packages app + dependencies
+        - Ensures environment consistency
+        - Best For
+            * Local development
+            * CI/CD
+            * Image building
+    2. Kubernetes
+        - Orchestrates containers
+        - Auto-scaling
+        - Self-healing
+        - Service discovery
+        Best For
+            * Microservices
+            * Production systems
+            * Multi-region deployments
+
+
+Docker + Kubernetes Workflow
+    1. Build image
+        docker build -t myapp:v1 .
+    2. Push image
+        docker push myapp:v1
+    3. Deploy
+        kubectl apply -f deployment.yaml
+
+
+Helm and Charts
+    - Overview
+        * Helm = package manager for Kubernetes
+        * Charts = reusable deployment templates
+        * Simplifies complex deployments
+    - Components
+        * Chart.yaml   — metadata
+        * values.yaml  — configuration
+        * templates/   — Kubernetes manifests
+    - Example
+        helm install myapp ./mychart
+        helm upgrade myapp ./mychart
+        helm rollback myapp 1
+    - Benefits
+        * Reusable deployments
+        * Environment-specific configs
+        * Versioned releases
+        * Easy rollbacks
+    - Best Practices
+        * Keep values.yaml minimal
+        * Separate env configs (dev/prod)
+        * Use Helm repos
+        * Version charts
+        * Avoid hardcoding images
+
+
+When to Use
+    - Docker Only
+        * Prototypes
+        * CI pipelines
+    - Kubernetes Only
+        * Existing images
+        * Platform teams
+    - Docker + Kubernetes
+        * Standard production setup
+
+
+Security
+    - Scan images for vulnerabilities
+    - Run as non-root
+    - Use minimal base images
+    - Rotate secrets
+    - Apply RBAC
+
+
+Observability
+    - Centralized logs
+    - Metrics (Prometheus)
+    - Tracing
+    - Health probes
+
+
+Production Best Practices
+    - Use readiness/liveness probes
+    - Limit resource usage
+    - Set requests/limits
+    - Enable autoscaling
+    - Use namespaces
+    - Implement blue/green or canary deployments
+
+
+Configuration Management
+    - Use ConfigMaps for configs
+    - Use Secrets for credentials
+    - Avoid baking secrets into images
+    - Use environment variables
+
+
+Summary
+    | Tool       | Purpose        | Scaling | Best For        |
+    |------------|----------------|---------|-----------------|
+    | Docker     | Build images   | Manual  | Dev/CI          |
+    | Kubernetes | Orchestrate    | Auto    | Production      |
+    | Helm       | Deploy/manage  | Auto    | K8s packaging   |
+
+
+Useful Commands
+    - Docker
+        + Build Image
+            docker build -t myapp:latest .
+        + Run Container
+            docker run -p 8080:80 myapp
+        + Run in Background
+            docker run -d myapp
+        + List Running Containers
+            docker ps
+        + List All Containers
+            docker ps -a
+        + Stop Container
+            docker stop <container_id>
+        + Remove Container
+            docker rm <container_id>
+        + Remove Image
+            docker rmi myapp:latest
+        + View Logs
+            docker logs <container_id>
+        + Exec Into Container
+            docker exec -it <container_id> /bin/bash
+        + Clean Unused Resources
+            docker system prune
+    - Kubernetes
+        + Apply Config
+            kubectl apply -f deployment.yaml
+        + Get Resources
+            kubectl get pods
+            kubectl get services
+            kubectl get deployments
+        + Describe Resource
+            kubectl describe pod <pod_name>
+        + View Logs
+            kubectl logs <pod_name>
+        + Exec Into Pod
+            kubectl exec -it <pod_name> -- /bin/bash
+        + Scale Deployment
+            kubectl scale deployment myapp --replicas=3
+        + Restart Deployment
+            kubectl rollout restart deployment myapp
+        + Check Rollout Status
+            kubectl rollout status deployment myapp
+        + Delete Resource
+            kubectl delete -f deployment.yaml
+        + Port Forward
+            kubectl port-forward pod/<pod_name> 8080:80
+    - Helm
+        + Install Chart
+            helm install myapp ./mychart
+        + List Releases
+            helm list
+        + Upgrade Release
+            helm upgrade myapp ./mychart
+        + Rollback Release
+            helm rollback myapp 1
+        + Uninstall Release
+            helm uninstall myapp
+        + Show Values
+            helm show values ./mychart
+        + Lint Chart
+            helm lint ./mychart
+        + Dry Run Install
+            helm install myapp ./mychart --dry-run
