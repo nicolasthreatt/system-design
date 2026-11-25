@@ -52,6 +52,7 @@
 ## Webhooks
 
 - Server sends HTTP notifications when subscribed events occur
+  - Often an ongoing event subscription
 - Client registers an endpoint and event types
 - Common Uses
   - Payment updates
@@ -67,6 +68,7 @@
 ## Callbacks
 
 - Notify clients when asynchronous work finishes
+  - Often tied to one request only
 - Client supplies a URL for later notifications
 - Reduce repeated status requests (polling)
 - Common Uses
@@ -84,46 +86,45 @@
   5. Client verifies and durably queues the notification
      - Return 2xx quickly
      - Process slower business logic afterward
-- Example Request
+- Example
 
-  ```http
-  POST /exports
-  {
-      "event_id": "123",
-      "callback_url": "https://client.example.com/callbacks/exports"
-  }
-  ```
-- Example Response
+  - Request
 
-  ```http
-  202 Accepted
-  Location: /exports/export-456
-  {
-      "id": "export-456",
-      "status": "pending"
-  }
-  ```
-- Example Notification
+      ```http
+      POST /exports
+      {
+          "event_id": "123",
+          "callback_url": "https://client.example.com/callbacks/exports"
+      }
+      ```
 
-  ```http
-  POST https://client.example.com/callbacks/exports
-  {
-      "event_id": "evt-789",
-      "type": "export.completed",
-      "export_id": "export-456",
-      "status": "completed"
-  }
-  ```
+  - Response
 
-  - `event_id`: notification identifier
-  - `export_id`: job identifier
-  - Failure event: `export.failed`
-- Callbacks vs. Webhooks
+    ```http
+    202 Accepted
+    Location: /exports/export-456
+    {
+        "id": "export-456",
+        "status": "pending"
+    }
+    ```
 
-  - Callback: often tied to one request
-  - Webhook: often an ongoing event subscription
-  - Both can use HTTP notifications
-  - Terminology varies across APIs
+  - Notification
+
+    ```http
+    POST https://client.example.com/callbacks/exports
+    {
+        "event_id": "evt-789",
+        "type": "export.completed",
+        "export_id": "export-456",
+        "status": "completed"
+    }
+    ```
+
+    - `event_id`: notification identifier
+    - `export_id`: job identifier
+    - Failure event: `export.failed`
+
 - Delivery
 
   - Set delivery timeouts
