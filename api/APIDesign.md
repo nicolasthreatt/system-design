@@ -22,17 +22,32 @@
   - PATCH (partial update)
   - DELETE (remove data)
 
-## Inputs
+## Inputs Parameters
 
+- Query/URL Parameters
+
+  - Optional filters
+
+  ```Markdown
+  GET /events?city=CITY&date=DATE&venue=VENUE
+  ```
 - Path Parameters
 
   - Specify which resource you're working with
-    - GET /events/{id}
   - Use when required to identify the resource
-- Query Parameters
 
-  - Optional filters
-    - GET /events?city=CITY&date=DATE&venue=VENUE
+  ```Markdown
+  GET /events/{id}
+  ```
+- Header Parameters
+
+  - Send metadata with the request
+  - Example: authentication token
+
+  ```Markdown
+  GET /events
+  Authorization: Bearer <token>
+  ```
 - Request Body
 
   ```Markdown
@@ -215,7 +230,13 @@
   - Keep keys out of URLs and source control
 - CORS (Cross-Origin Resource Sharing)
 
-  - Controls which browser origins can read API responses
+  - Browser mechanism for controlling which origins can read a response
+  - An origin is a scheme, host, and port
+    - Example: `https://app.example.com`
+  - Browser sends the requesting origin
+  - Server allows it with the `Access-Control-Allow-Origin` response header
+  - Some requests trigger an `OPTIONS` preflight to check allowed methods and headers
+  - Applies to browser requests; server-to-server clients are not restricted by CORS
   - Allow only required origins
   - Does not replace authentication or authorization
 - CSRF (Cross-Site Request Forgery)

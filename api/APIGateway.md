@@ -83,7 +83,12 @@ flowchart LR
   - Storage
     - In-memory
     - Redis
-    - CDN
+        - Shared in-memory data store for cache entries
+        - Can be accessed by multiple gateway instances
+    - CDN (Content Delivery Network)
+        - Content is stored across multiple regions throughout world
+        - Users can access data from a shared regional server that's nearest
+        - Reduces load from main server and increases latency
 
 ## Security
 
